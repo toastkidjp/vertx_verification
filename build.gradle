@@ -1,0 +1,29 @@
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+mainClassName       = "io.vertx.core.Starter"
+
+def defaultEncoding = 'UTF-8'
+def vertxVersion    = '3.0.0'
+def mainVerticle    = "HelloVerticle"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  compile "io.vertx:vertx-core:${vertxVersion}"
+}
+
+run {
+  args = ["run", mainVerticle]
+}
+
+jar {
+  manifest {
+    attributes 'Main-Verticle': mainVerticle
+    attributes 'Main-Class'   : mainClassName
+  }
+  destinationDir = projectDir
+  from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
